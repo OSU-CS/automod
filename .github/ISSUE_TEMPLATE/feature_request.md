@@ -14,4 +14,6 @@ about: Suggest an idea for this project
 
 ## Acceptance Criteria
 
-<!-- A checklist of things a future PR should solve to be considerd "complete" -->
+<!-- A checklist of things a future PR should solve to be considered "complete" -->
+
+- [ ]
