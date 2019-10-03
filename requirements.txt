@@ -6,3 +6,32 @@ MarkupSafe==1.1.1
 Werkzeug==0.16.0
 slackclient==1.3.2
 slackeventsapi==2.1.0
+
+# testing
+astroid==1.5.3  # version 1.6 has error with __class__ attribute
+coverage
+mypy
+pydocstyle<4.0.0   # 4.0.0 conflicts with flake8-docstrings
+pytest==3.6.4   # fixed since 3.7 has problems with coverage
+pytest-cov
+pytest-mock
+pylint<1.8
+flake8
+flake8-commas
+flake8-comprehensions
+flake8-docstrings
+flake8-quotes
+fabric==1.14.1
+
+# debug / prototype
+ptpython
+
+# build
+wheel
+setuptools
+
+# docs
+sphinx
+
+# tools
+sshtunnel
