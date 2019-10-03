@@ -3,6 +3,10 @@ AutoMod
 
 
 ### To run locally:
+* Clone this repository
+    ```bash
+    git clone git@github.com:OSU-CS/automod.git
+    ```
 * Install python3.7
 * Create base venv (virtual environment)
     ```bash
