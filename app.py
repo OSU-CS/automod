@@ -11,8 +11,7 @@ from emoji_message import EmojiMessage
 def onboarding_message(**payload):
     """Catch emoji_changed event.
 
-    Triggered when an emoji is added, removed, or when a new alias has been
-    created.
+    Triggered when an emoji is added, removed, or when a new alias has been created.
     """
     web_client = payload['web_client']
 
@@ -28,9 +27,9 @@ def send_emoji_message(web_client: slack.WebClient, channel: str,
 
     Arguments:
         web_client {slack.WebClient} -- The client to respond on
-        channel {str} -- The channel to send the message to
-        emoji_name {str} -- The name of the emoji
-        event_type {str} -- The event that has happened, 'add' or 'remove'
+        channel {str}                -- The channel to send the message to
+        emoji_name {str}             -- The name of the emoji
+        event_type {str}             -- The event that has happened, 'add' or 'remove'
     """
     emoji_message = EmojiMessage(channel, emoji_name, event_type)
     message = emoji_message.get_message_payload()
