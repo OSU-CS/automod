@@ -8,7 +8,7 @@ from emoji_message import EmojiMessage
 
 
 @slack.RTMClient.run_on(event='emoji_changed')
-def onboarding_message(**payload):
+def emoji_callback(**payload):
     """Catch emoji_changed event.
 
     Triggered when an emoji is added, removed, or when a new alias has been created.
