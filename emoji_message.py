@@ -56,5 +56,5 @@ class EmojiMessage:
             'text': {
                 'type': 'mrkdwn',
                 'text': f':{self.icon_emoji}: ({self.icon_emoji}) has been {self._get_past_tense_event()}',
-                },
-            }
+            },
+        }
