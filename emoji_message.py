@@ -33,9 +33,7 @@ class EmojiMessage:
             'channel': self.channel,
             'username': self.username,
             'icon_emoji': self.icon_emoji,
-            'blocks': [
-                *self._get_message_block(),
-            ],
+            'blocks': [self._get_message_block()],
         }
 
     def _get_past_tense_event(self):

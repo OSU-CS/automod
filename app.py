@@ -21,8 +21,7 @@ def onboarding_message(**payload):
     send_emoji_message(web_client, 'admin', emoji_name, event_type)
 
 
-def send_emoji_message(web_client: slack.WebClient, channel: str,
-                       emoji_name: str, event_type: str):
+def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: str, event_type: str):
     """Send a message to a channel about an emoji event.
 
     Arguments:
