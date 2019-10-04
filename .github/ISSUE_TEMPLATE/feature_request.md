@@ -2,19 +2,19 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: ''
+labels: enhancement
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Description
+A clear an concise description of the feature including the chain of events that should occur for this feature to play out
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Blocked By ⛔️ 
+- [ ]  A ticket that need to be resolves before this ticket can be worked on
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Acceptance Criteria
+- [ ] Criteria that must be met by the PR before it can be approved
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Extra
+Information that could helo solve this problem including articles, links to repositories, proposed solutions, etc.
