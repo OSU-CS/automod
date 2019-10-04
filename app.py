@@ -1,15 +1,42 @@
-""" Start of the application"""
+"""Main application that subscribes to events."""
 
-from flask import Flask
+import os
+import ssl as ssl_lib
+import certifi
+import slack
+from emoji_message import EmojiMessage
 
-app = Flask(__name__)  # pylint: disable=invalid-name
+
+@slack.RTMClient.run_on(event='emoji_changed')
+def emoji_callback(**payload):
+    """Catch emoji_changed event.
+
+    Triggered when an emoji is added, removed, or when a new alias has been created.
+    """
+    web_client = payload['web_client']
+
+    emoji_name = payload['data']['name']
+    event_type = payload['data']['subtype']
+
+    send_emoji_message(web_client, 'admin', emoji_name, event_type)
 
 
-@app.route('/')
-def hello_world():
-    """ Returns 'Hello World' """
-    return 'Hello World!'
+def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: str, event_type: str):
+    """Send a message to a channel about an emoji event.
+
+    :param web_client: The client to respond on
+    :param channel: The channel to send the message to
+    :param emoji_name: The name of the emoji
+    :param event_type: The event that has happened, 'add' or 'remove'
+    """
+    emoji_message = EmojiMessage(channel, emoji_name, event_type)
+    message = emoji_message.get_message_payload()
+
+    web_client.chat_postMessage(**message)
 
 
 if __name__ == '__main__':
-    app.run()
+    SSL_CONTEXT = ssl_lib.create_default_context(cafile=certifi.where())
+    SLACK_TOKEN = os.environ['SLACK_BOT_TOKEN']
+    RTM_CLIENT = slack.RTMClient(token=SLACK_TOKEN, ssl=SSL_CONTEXT)
+    RTM_CLIENT.start()
