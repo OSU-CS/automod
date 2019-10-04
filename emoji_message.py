@@ -5,12 +5,15 @@ class EmojiMessage:
     """Constructs emoji report message."""
 
     def __init__(self, channel, icon_emoji, event_type):
-        """Initialize EmojiMessage with the channel to send the message to and the emoji to report on.
+        """Initialize EmojiMessage.
+
+        Created with the channel to send the message to, the event type
+        that triggered the callback and the emoji to report on.
 
         Arguments:
-            channel {string}    -- The channel to send the emoji message to
+            channel {string} -- The channel to send the emoji message to
             icon_emoji {string} -- The name of the emoji
-            event_type {str}    -- The event that has happened, either 'add' or 'remove'
+            event_type {str} -- The event that has happened, 'add' or 'remove'
         """
         self.channel = channel
         self.username = 'automod'
@@ -42,7 +45,10 @@ class EmojiMessage:
             str -- The past tense event type
 
         """
-        return f'{self.event_type}d' if self.event_type[-1] == 'e' else f'{self.event_type}ed'
+        if self.event_type[-1] == 'e':
+            return f'{self.event_type}d'
+        else:
+            return f'{self.event_type}ed'
 
     def _get_message_block(self):
         """Create and returns formatted message block to send.
@@ -55,6 +61,7 @@ class EmojiMessage:
             'type': 'section',
             'text': {
                 'type': 'mrkdwn',
-                'text': f':{self.icon_emoji}: ({self.icon_emoji}) has been {self._get_past_tense_event()}',
+                'text': f':{self.icon_emoji}: ({self.icon_emoji})'
+                        'has been {self._get_past_tense_event()}',
             },
         }
