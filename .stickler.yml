@@ -1,7 +1,4 @@
 linters:
-  pep8:
-    python: 3
-    fixer: true
   flake8:
     fixer: true
     config: '.flake8'
