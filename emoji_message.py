@@ -43,8 +43,10 @@ class EmojiMessage:
             str -- The past tense event type
 
         """
-        past_tense_event = f'{self.event_type}d' if self.event_type[-1] == 'e' else f'{self.event_type}ed'
-        return past_tense_event
+        if self.event_type[-1] == 'e':
+            return f'{self.event_type}d'
+        else:
+            return f'{self.event_type}ed'
 
     def _get_message_block(self):
         """Create and returns formatted message block to send.
