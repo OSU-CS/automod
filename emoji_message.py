@@ -10,10 +10,9 @@ class EmojiMessage:
         Created with the channel to send the message to, the event type that triggered the callback and the emoji to
         report on.
 
-        Arguments:
-            channel {string}    -- The channel to send the emoji message to
-            icon_emoji {string} -- The name of the emoji
-            event_type {str}    -- The event that has happened, 'add' or 'remove'
+        :param channel: The channel to send the emoji message to
+        :param icon_emoji: The name of the emoji
+        :param event_type: The event that has happened, 'add' or 'remove'
         """
         self.channel = channel
         self.username = 'automod'
@@ -24,9 +23,7 @@ class EmojiMessage:
     def get_message_payload(self):
         """Format and returns information to post slack message.
 
-        Returns:
-            object -- Formatted information for slack
-
+        :return: Formatted information for slack
         """
         return {
             'ts': self.timestamp,
@@ -39,18 +36,14 @@ class EmojiMessage:
     def _get_past_tense_event(self):
         """Format the event type into past tense.
 
-        Returns:
-            str -- The past tense event type
-
+        :return: Past tense event type
         """
         return f'{self.event_type}d' if self.event_type[-1] == 'e' else f'{self.event_type}ed'
 
     def _get_message_block(self):
         """Create and returns formatted message block to send.
 
-        Returns:
-            object -- The formatted message block
-
+        :return: Formatted message block
         """
         return {
             'type': 'section',

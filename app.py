@@ -24,11 +24,10 @@ def emoji_callback(**payload):
 def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: str, event_type: str):
     """Send a message to a channel about an emoji event.
 
-    Arguments:
-        web_client {slack.WebClient} -- The client to respond on
-        channel {str}                -- The channel to send the message to
-        emoji_name {str}             -- The name of the emoji
-        event_type {str}             -- The event that has happened, 'add' or 'remove'
+    :param web_client: The client to respond on
+    :param channel: The channel to send the message to
+    :param emoji_name: The name of the emoji
+    :param event_type: The event that has happened, 'add' or 'remove'
     """
     emoji_message = EmojiMessage(channel, emoji_name, event_type)
     message = emoji_message.get_message_payload()
