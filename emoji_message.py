@@ -1,4 +1,6 @@
 """Constructs emoji report message."""
+
+
 class EmojiMessage:
     """Constructs emoji report message."""
 
@@ -16,7 +18,6 @@ class EmojiMessage:
         self.event_type = event_type
         self.timestamp = ""
 
-
     def get_message_payload(self):
         """Formats and returns information to post slack message
 
@@ -33,7 +34,6 @@ class EmojiMessage:
             ],
         }
 
-
     def _get_past_tense_event(self):
         """Formats the event type into past tense
 
@@ -42,7 +42,6 @@ class EmojiMessage:
         """
 
         return f"{self.event_type}d" if self.event_type[-1] == 'e' else f"{self.event_type}ed"
-
 
     def _get_message_block(self):
         """Creates and returns formatted message block to send
@@ -55,5 +54,5 @@ class EmojiMessage:
             "text": {
                 "type": "mrkdwn",
                 "text": f":{self.icon_emoji}: ({self.icon_emoji}) has been {self._get_past_tense_event()}"
-                }
             }
+        }

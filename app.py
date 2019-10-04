@@ -6,6 +6,7 @@ import certifi
 import slack
 from emoji_message import EmojiMessage
 
+
 @slack.RTMClient.run_on(event="emoji_changed")
 def onboarding_message(**payload):
     """Callback for when an emoji is added, removed, or when a new alias has been created. Automatically sends a message
