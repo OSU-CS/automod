@@ -4,5 +4,6 @@ linters:
     fixer: true
   flake8:
     fixer: true
+    config: '.flake8'
 fixers:
   enable: true
