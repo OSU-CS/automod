@@ -7,11 +7,11 @@ AutoMod
     ```bash
     git clone git@github.com:OSU-CS/automod.git
     ```
-* Install python3.7
+* Install python3.7 and pip
 * Create base venv (virtual environment)
     ```bash
     pip install virtualenv
-    virtualenv venv
+    virtualenv -p `which python3.7` venv
     ```
 * Activate venv
     ```bash
@@ -19,9 +19,9 @@ AutoMod
     ```
 * Rebuild venv with dependencies
     ```bash
-    pip install -r requirements.txt
+    pip install -Ur requirements.txt
     ```
-* Run app
+* Run app (after activating venv)
     ```bash
     python app.py
     ```
