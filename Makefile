@@ -18,4 +18,7 @@ remove-venv:
 
 rebuild-venv: remove-venv venv
 
+lint: venv
+	$(VENV)/bin/flake8
+
 clean: remove-venv
