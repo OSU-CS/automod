@@ -64,3 +64,13 @@ Before submitting a PR please submit an issue that accurately describes the feat
 1. Notify the PR author that their PR is approved to let them merge into master
 
 _NOTE: We deploy from master, so do not merge anything that has not been thoroughly tested._
+
+### 4. Testing After Merging
+
+1. After merging an approved PR, deploy master to our [integration testing instance](https://dashboard.heroku.com/apps/osuautomodint/deploy/github)
+1. Run all tests again in our [integration testing workspace](https://app.slack.com/client/TP02CBTQV/CP02CC0SZ) and confirm nothing has broken and all acceptance criteria has been met
+
+### 5. Deploying to Production
+
+1. After testing thoroughly, deploy master to our [production instance](https://dashboard.heroku.com/apps/osuautomod/deploy/github)
+1. Pray the above steps were enough to not break the real slack workspace
