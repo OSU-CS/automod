@@ -23,6 +23,8 @@ AutoMod
     ```
 * Run app (after activating venv)
     ```bash
+    SLACK_BOT_TOKEN=<production_api_key>
+    export SLACK_BOT_TOKEN
     python app.py
     ```
 
@@ -47,3 +49,15 @@ Before submitting a PR please submit an issue that accurately describes the feat
 1. Fill out the information requested in the template
 1. Press submit, tag with any relevant labels, and ensure all tests pass before requesting a review
 1. Once your PR passes reviews, hit the "Squash and merge" button
+
+### 3. Reviewing a Pull Request
+
+1. Checkout the branch you will be reviewing
+1. Run the app locally and test changes in the [integration testing workspace](https://app.slack.com/client/TP02CBTQV/CP02CC0SZ)
+    ```bash
+    SLACK_BOT_TOKEN=<integration_testing_api_key>
+    export SLACK_BOT_TOKEN
+    python app.py
+    ```
+1. Add comments or suggestions
+1. Ensure all of the acceptance criteria are hit, manual testing succeeds, and all linting and tests pass before approving

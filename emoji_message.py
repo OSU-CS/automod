@@ -49,6 +49,6 @@ class EmojiMessage:
             'type': 'section',
             'text': {
                 'type': 'mrkdwn',
-                'text': f':{self.icon_emoji}: ({self.icon_emoji} has been {self._get_past_tense_event()}',
+                'text': f':{self.icon_emoji}:  ({self.icon_emoji}) has been {self._get_past_tense_event()}',
             },
         }
