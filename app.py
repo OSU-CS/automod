@@ -1,8 +1,6 @@
 """Main application that subscribes to events."""
 
 import os
-import ssl as ssl_lib
-import certifi
 import slack
 from emoji_message import EmojiMessage
 
@@ -15,8 +13,8 @@ def emoji_callback(**payload):
     """
     web_client = payload['web_client']
 
-    emoji_name = payload['data']['name']
     event_type = payload['data']['subtype']
+    emoji_name = payload['data']['name'] if event_type == 'add' else payload['data']['names'][0]
 
     send_emoji_message(web_client, 'admin', emoji_name, event_type)
 
@@ -36,7 +34,6 @@ def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: st
 
 
 if __name__ == '__main__':
-    SSL_CONTEXT = ssl_lib.create_default_context(cafile=certifi.where())
     SLACK_TOKEN = os.environ['SLACK_BOT_TOKEN']
-    RTM_CLIENT = slack.RTMClient(token=SLACK_TOKEN, ssl=SSL_CONTEXT)
-    RTM_CLIENT.start()
+    rtm_client = slack.RTMClient(token=SLACK_TOKEN)
+    rtm_client.start()
