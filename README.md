@@ -61,3 +61,6 @@ Before submitting a PR please submit an issue that accurately describes the feat
     ```
 1. Add comments or suggestions
 1. Ensure all of the acceptance criteria are hit, manual testing succeeds, and all linting and tests pass before approving
+1. Notify the PR author that their PR is approved to let them merge into master
+
+_NOTE: We deploy from master, so do not merge anything that has not been thoroughly tested._
