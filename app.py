@@ -32,6 +32,9 @@ def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: st
 
     web_client.chat_postMessage(**message)
 
+    message.update({'channel': 'emoji_meta', 'post_at': emoji_message.next_release_date()})
+    web_client.chat_scheduleMessage(**message)
+
 
 if __name__ == '__main__':
     SLACK_TOKEN = os.environ['SLACK_BOT_TOKEN']
