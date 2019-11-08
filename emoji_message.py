@@ -55,12 +55,12 @@ class EmojiMessage:
             },
         }
 
-
     @staticmethod
     def next_release_date() -> str:
         """Get release time as Unix EPOCH timestamp"""
         utc_time = datetime.datetime.utcnow()
         days = 1 if utc_time.hour >= 3 else 0
         offset_time = utc_time + datetime.timedelta(days=days)
-        send_timestamp = offset_time.replace(hour=3, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc).timestamp()
+        send_timestamp = offset_time.replace(hour=3, minute=0, second=0, microsecond=0,
+                                             tzinfo=datetime.timezone.utc).timestamp()
         return str(send_timestamp)
