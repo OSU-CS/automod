@@ -6,7 +6,7 @@ from emoji_message import EmojiMessage
 
 
 @slack.RTMClient.run_on(event='emoji_changed')
-def emoji_callback(**payload):
+def emoji_callback(**payload) -> None:
     """Catch emoji_changed event.
 
     Triggered when an emoji is added, removed, or when a new alias has been created.
@@ -19,7 +19,7 @@ def emoji_callback(**payload):
     send_emoji_message(web_client, 'admin', emoji_name, event_type)
 
 
-def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: str, event_type: str):
+def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: str, event_type: str) -> None:
     """Send a message to a channel about an emoji event.
 
     :param web_client: The client to respond on
@@ -32,7 +32,9 @@ def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: st
 
     web_client.chat_postMessage(**message)
 
-    message.update({'channel': 'emoji_meta', 'post_at': emoji_message.next_release_date()})
+    message.update({'channel': 'emoji_meta',
+                    'post_at': emoji_message.next_release_date(),
+                    'text': message.get('blocks')[0].get('text').get('text')})
     web_client.chat_scheduleMessage(**message)
 
 
