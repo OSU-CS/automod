@@ -32,9 +32,7 @@ def send_emoji_message(web_client: slack.WebClient, channel: str, emoji_name: st
 
     web_client.chat_postMessage(**message)
 
-    message.update({'channel': 'emoji_meta',
-                    'post_at': emoji_message.next_release_date(),
-                    'text': message.get('blocks')[0].get('text').get('text')})
+    message.update({'channel': 'emoji_meta', 'post_at': emoji_message.next_release_date()})
     web_client.chat_scheduleMessage(**message)
 
 
