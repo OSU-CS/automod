@@ -8,7 +8,7 @@ from new_channel_message import NewChannelMessage
 
 
 @slack.RTMClient.run_on(event='emoji_changed')
-def emoji_callback(**payload):
+def emoji_callback(**payload) -> None:
     """Catch emoji_changed event.
 
     Triggered when an emoji is added, removed, or when a new alias has been created.
@@ -21,7 +21,7 @@ def emoji_callback(**payload):
 
 
 @slack.RTMClient.run_on(event='channel_created')
-def new_channel_callback(**payload):
+def new_channel_callback(**payload) -> None:
     """Catch channel_created event.
 
     Triggered when a channel has been created.
@@ -32,7 +32,7 @@ def new_channel_callback(**payload):
     send_new_channel_message(web_client, 'admin', new_channel_name)
 
 
-def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_name: str, event_type: str):
+def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_name: str, event_type: str) -> None:
     """Send a message to a channel about an emoji event.
 
     :param web_client: The client to respond on
@@ -45,8 +45,11 @@ def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_n
 
     web_client.chat_postMessage(**message)
 
+    message.update({'channel': 'emoji_meta', 'post_at': emoji_message.next_release_date()})
+    web_client.chat_scheduleMessage(**message)
 
-def send_new_channel_message(web_client: slack.WebClient, report_channel: str, new_channel_name: str):
+
+def send_new_channel_message(web_client: slack.WebClient, report_channel: str, new_channel_name: str) -> None:
     """Send a message to a channel about a new channel event.
 
     :param web_client: The client to respond on

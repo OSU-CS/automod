@@ -1,5 +1,7 @@
 """Constructs emoji report message."""
 
+import datetime
+
 
 class EmojiMessage:
     """Constructs emoji report message."""
@@ -20,7 +22,7 @@ class EmojiMessage:
         self.event_type = event_type
         self.timestamp = ''
 
-    def get_message_payload(self):
+    def get_message_payload(self) -> dict:
         """Format and returns information to post slack message.
 
         :return: Formatted information for slack
@@ -30,25 +32,29 @@ class EmojiMessage:
             'channel': self.report_channel,
             'username': self.username,
             'icon_emoji': self.icon_emoji,
-            'blocks': [self._get_message_block()],
+            'text': self._get_message_text(),
         }
 
-    def _get_past_tense_event(self):
+    def _get_past_tense_event(self) -> str:
         """Format the event type into past tense.
 
         :return: Past tense event type
         """
         return f'{self.event_type}d' if self.event_type[-1] == 'e' else f'{self.event_type}ed'
 
-    def _get_message_block(self):
-        """Create and returns formatted message block to send.
+    def _get_message_text(self) -> str:
+        """Create and returns formatted message text to send.
 
-        :return: Formatted message block
+        :return: Formatted message text
         """
-        return {
-            'type': 'section',
-            'text': {
-                'type': 'mrkdwn',
-                'text': f':{self.icon_emoji}:  ({self.icon_emoji}) has been {self._get_past_tense_event()}',
-            },
-        }
+        return f':{self.icon_emoji}:  ({self.icon_emoji}) has been {self._get_past_tense_event()}'
+
+    @staticmethod
+    def next_release_date(release_hour: int = 3) -> str:
+        """Get release time as Unix EPOCH timestamp"""
+        utc_time = datetime.datetime.utcnow()
+        if utc_time.hour >= release_hour:
+            utc_time += datetime.timedelta(days=1)
+        send_timestamp = utc_time.replace(hour=release_hour, minute=0, second=0, microsecond=0,
+                                          tzinfo=datetime.timezone.utc).timestamp()
+        return str(send_timestamp)
