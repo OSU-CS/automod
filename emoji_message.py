@@ -6,17 +6,17 @@ import datetime
 class EmojiMessage:
     """Constructs emoji report message."""
 
-    def __init__(self, channel, icon_emoji, event_type):
+    def __init__(self, report_channel, icon_emoji, event_type):
         """Initialize EmojiMessage.
 
         Created with the channel to send the message to, the event type that triggered the callback and the emoji to
         report on.
 
-        :param channel: The channel to send the emoji message to
+        :param report_channel: The channel to send the emoji message to
         :param icon_emoji: The name of the emoji
         :param event_type: The event that has happened, 'add' or 'remove'
         """
-        self.channel = channel
+        self.report_channel = report_channel
         self.username = 'automod'
         self.icon_emoji = icon_emoji
         self.event_type = event_type
@@ -29,7 +29,7 @@ class EmojiMessage:
         """
         return {
             'ts': self.timestamp,
-            'channel': self.channel,
+            'channel': self.report_channel,
             'username': self.username,
             'icon_emoji': self.icon_emoji,
             'text': self._get_message_text(),
