@@ -28,6 +28,7 @@ AutoMod
     python app.py
     ```
 
+Alternatively, most of these steps are set up in the makefile. For more info on how to use a makefile, read [this](docs/about_makefiles.md).
 ## Contributing
 
 ### 1. Submitting an Issue
