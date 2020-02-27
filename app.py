@@ -1,10 +1,15 @@
 """Main application that subscribes to events."""
 
+import logging
 import os
 import slack
+from time import sleep
 
 from emoji_message import EmojiMessage
 from new_channel_message import NewChannelMessage
+
+
+logger = logging.getLogger(__name__)
 
 
 @slack.RTMClient.run_on(event='emoji_changed')
@@ -42,11 +47,28 @@ def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_n
     """
     emoji_message = EmojiMessage(report_channel, emoji_name, event_type)
     message = emoji_message.get_message_payload()
+    try:
+        web_client.chat_postMessage(**message)
+    except slack.errors.SlackApiError:
+        # probably failed on auto-retry from slack client library, which will crash the app
+        logger.error('Failed to post message to channel %s: %s', message.get('channel'), message.get('text'),
+                     exc_info=True)
+        logger.debug(message)
 
-    web_client.chat_postMessage(**message)
+    # delay next request by 1.25 seconds for rate limited API
+    sleep(1.25)
 
     message.update({'channel': 'emoji_meta', 'post_at': emoji_message.next_release_date()})
-    web_client.chat_scheduleMessage(**message)
+    try:
+        web_client.chat_scheduleMessage(**message)
+    except slack.errors.SlackApiError:
+        # probably failed on auto-retry from slack client library, which will crash the app
+        logger.error('Failed to schedule message to channel %s: %s', message.get('channel'), message.get('text'),
+                     exc_info=True)
+        logger.debug(message)
+
+    # delay next request by 1.25 seconds for rate limited API
+    sleep(1.25)
 
 
 def send_new_channel_message(web_client: slack.WebClient, report_channel: str, new_channel_name: str) -> None:
@@ -63,6 +85,8 @@ def send_new_channel_message(web_client: slack.WebClient, report_channel: str, n
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO,
+                        format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s')
     SLACK_TOKEN = os.environ['SLACK_BOT_TOKEN']
     rtm_client = slack.RTMClient(token=SLACK_TOKEN)
     rtm_client.start()
