@@ -50,11 +50,11 @@ class EmojiMessage:
         return f':{self.icon_emoji}:  ({self.icon_emoji}) has been {self._get_past_tense_event()}'
 
     @staticmethod
-    def next_release_date(release_hour: int = 3) -> str:
+    def next_release_date(release_hour: int = 3) -> int:
         """Get release time as Unix EPOCH timestamp"""
         utc_time = datetime.datetime.utcnow()
         if utc_time.hour >= release_hour:
             utc_time += datetime.timedelta(days=1)
         send_timestamp = utc_time.replace(hour=release_hour, minute=0, second=0, microsecond=0,
                                           tzinfo=datetime.timezone.utc).timestamp()
-        return str(send_timestamp)
+        return int(send_timestamp)
