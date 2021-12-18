@@ -21,7 +21,8 @@ AutoMod
     ```bash
     pip install -Ur requirements.txt
     ```
-* Run app (after activating venv)
+* Run app (after activating venv). API key should be the "Bot User OAuth Token" under the Oauth &
+  Permissions tab
     ```bash
     SLACK_BOT_TOKEN=<production_api_key>
     export SLACK_BOT_TOKEN
