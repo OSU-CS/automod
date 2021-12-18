@@ -98,7 +98,7 @@ def send_new_channel_message(web_client: slack.WebClient, report_channel: str, n
 
 
 def send_new_user_message(web_client: slack.WebClient, report_channel: str, new_user: str) -> None:
-    """Send a message to a channel about a new channel event.
+    """Send a message to a channel about a new user event. Automatically pins the message.
 
     :param web_client: The client to respond on
     :param report_channel: The channel to send the message to
@@ -107,7 +107,10 @@ def send_new_user_message(web_client: slack.WebClient, report_channel: str, new_
     new_user_message = NewUserMessage(report_channel, new_user)
     message = new_user_message.get_message_payload()
 
-    web_client.chat_postMessage(**message)
+    response = web_client.chat_postMessage(**message)
+
+    # Pin this message to the channel
+    web_client.pins_add(channel=response['channel'], timestamp=response['ts'])
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
