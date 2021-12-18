@@ -1,5 +1,6 @@
 """Constructs user report message."""
 
+
 class NewUserMessage:
     """Constructs user report message."""
 

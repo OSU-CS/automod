@@ -96,6 +96,7 @@ def send_new_channel_message(web_client: slack.WebClient, report_channel: str, n
 
     web_client.chat_postMessage(**message)
 
+
 def send_new_user_message(web_client: slack.WebClient, report_channel: str, new_user: str) -> None:
     """Send a message to a channel about a new channel event.
 
