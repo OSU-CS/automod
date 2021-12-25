@@ -21,7 +21,8 @@ AutoMod
     ```bash
     pip install -Ur requirements.txt
     ```
-* Run app (after activating venv)
+* Run app (after activating venv). API key should be the "Bot User OAuth Token" under the Oauth &
+  Permissions tab
     ```bash
     SLACK_BOT_TOKEN=<production_api_key>
     export SLACK_BOT_TOKEN
@@ -69,7 +70,7 @@ _NOTE: We deploy from master, so do not merge anything that has not been thoroug
 ### 4. Testing After Merging
 
 1. After merging an approved PR, deploy master to our [integration testing instance](https://dashboard.heroku.com/apps/osuautomodint/deploy/github)
-1. Run all tests again in our [integration testing workspace](https://app.slack.com/client/TP02CBTQV/CP02CC0SZ) and confirm nothing has broken and all acceptance criteria has been met
+1. Run all tests again in our [integration testing workspace - osu-cs-int.slack.com](https://app.slack.com/client/TP02CBTQV/CP02CC0SZ) and confirm nothing has broken and all acceptance criteria has been met
 
 ### 5. Deploying to Production
 
