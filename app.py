@@ -7,6 +7,7 @@ from time import sleep
 
 from emoji_message import EmojiMessage
 from new_channel_message import NewChannelMessage
+from new_user_message import NewUserMessage
 
 
 logger = logging.getLogger(__name__)
@@ -35,6 +36,18 @@ def new_channel_callback(**payload) -> None:
     new_channel_name = payload['data']['channel']['name']
 
     send_new_channel_message(web_client, 'admin', new_channel_name)
+
+
+@slack.RTMClient.run_on(event='team_join')
+def new_user_callback(**payload) -> None:
+    """Catch team_join event.
+
+    Triggered when a user has joined the workspace.
+    """
+    web_client = payload['web_client']
+    new_user = payload['data']['user']
+
+    send_new_user_message(web_client, 'admin_logs', new_user)
 
 
 def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_name: str, event_type: str) -> None:
@@ -83,6 +96,21 @@ def send_new_channel_message(web_client: slack.WebClient, report_channel: str, n
 
     web_client.chat_postMessage(**message)
 
+
+def send_new_user_message(web_client: slack.WebClient, report_channel: str, new_user: str) -> None:
+    """Send a message to a channel about a new user event. Automatically pins the message.
+
+    :param web_client: The client to respond on
+    :param report_channel: The channel to send the message to
+    :param new_user: The new slack user object
+    """
+    new_user_message = NewUserMessage(report_channel, new_user)
+    message = new_user_message.get_message_payload()
+
+    response = web_client.chat_postMessage(**message)
+
+    # Pin this message to the channel
+    web_client.pins_add(channel=response['channel'], timestamp=response['ts'])
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
