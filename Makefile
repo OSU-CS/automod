@@ -21,4 +21,13 @@ rebuild-venv: remove-venv venv
 lint: venv
 	$(VENV)/bin/flake8
 
+docker-build:
+	docker build . -t automod
+
+docker-run:
+	docker run --name automod-dev --env SLACK_BOT_TOKEN -it automod
+
+docker-exec:
+	docker exec -it automod-dev bash
+
 clean: remove-venv
