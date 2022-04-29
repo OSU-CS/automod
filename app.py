@@ -2,15 +2,16 @@
 
 import logging
 import os
+from time import sleep
+
+from fastapi import FastAPI, Request
 from slack_bolt import App
 from slack_bolt.adapter.fastapi import SlackRequestHandler
 from slack_sdk import WebClient, errors
-from time import sleep
 
 from emoji_message import EmojiMessage
 from new_channel_message import NewChannelMessage
 from new_user_message import NewUserMessage
-
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,6 @@ app_handler = SlackRequestHandler(app)
 
 @app.event('emoji_changed')
 def emoji_callback(client, event) -> None:
-
     """Catch emoji_changed event.
 
     Triggered when an emoji is added, removed, or when a new alias has been created.
@@ -121,8 +121,6 @@ def send_new_user_message(web_client: WebClient, report_channel: str, new_user: 
     web_client.pins_add(channel=response['channel'], timestamp=response['ts'])
 
 
-from fastapi import FastAPI, Request
-
 api = FastAPI()
 
 
@@ -135,4 +133,3 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
                         format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s')
     app.start(port=int(os.environ.get("PORT", 3000)))
-
