@@ -2,7 +2,8 @@
 
 import logging
 import os
-import slack
+from slack_bolt import App
+from slack_sdk import WebClient, errors
 from time import sleep
 
 from emoji_message import EmojiMessage
@@ -12,45 +13,49 @@ from new_user_message import NewUserMessage
 
 logger = logging.getLogger(__name__)
 
+app = App(
+    token=os.environ.get('SLACK_BOT_TOKEN'),
+    signing_secret=os.environ.get('SLACK_SIGNING_SECRET')
+)
 
-@slack.RTMClient.run_on(event='emoji_changed')
-def emoji_callback(**payload) -> None:
+
+@app.event('emoji_changed')
+def emoji_callback(client, event) -> None:
+
     """Catch emoji_changed event.
 
     Triggered when an emoji is added, removed, or when a new alias has been created.
     """
-    web_client = payload['web_client']
-    event_type = payload['data']['subtype']
-    emoji_name = payload['data']['name'] if event_type == 'add' else payload['data']['names'][0]
+    logger.info(event)
+    event_type = event['subtype']
+    emoji_name = event['name'] if event_type == 'add' else event['names'][0]
 
-    send_emoji_message(web_client, 'admin', emoji_name, event_type)
+    send_emoji_message(client, 'admin', emoji_name, event_type)
 
 
-@slack.RTMClient.run_on(event='channel_created')
-def new_channel_callback(**payload) -> None:
+@app.event('channel_created')
+def new_channel_callback(client, event) -> None:
     """Catch channel_created event.
 
     Triggered when a channel has been created.
     """
-    web_client = payload['web_client']
-    new_channel_name = payload['data']['channel']['name']
+    new_channel_name = event['channel']['name']
 
-    send_new_channel_message(web_client, 'admin', new_channel_name)
+    send_new_channel_message(client, 'admin', new_channel_name)
 
 
-@slack.RTMClient.run_on(event='team_join')
-def new_user_callback(**payload) -> None:
+@app.event('team_join')
+def new_user_callback(client, event):
     """Catch team_join event.
 
     Triggered when a user has joined the workspace.
     """
-    web_client = payload['web_client']
-    new_user = payload['data']['user']
+    new_user = event['user']
 
-    send_new_user_message(web_client, 'admin_logs', new_user)
+    send_new_user_message(client, 'admin_logs', new_user)
 
 
-def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_name: str, event_type: str) -> None:
+def send_emoji_message(web_client: WebClient, report_channel: str, emoji_name: str, event_type: str) -> None:
     """Send a message to a channel about an emoji event.
 
     :param web_client: The client to respond on
@@ -62,7 +67,7 @@ def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_n
     message = emoji_message.get_message_payload()
     try:
         web_client.chat_postMessage(**message)
-    except slack.errors.SlackApiError:
+    except errors.SlackApiError:
         # probably failed on auto-retry from slack client library, which will crash the app
         logger.error('Failed to post message to channel %s: %s', message.get('channel'), message.get('text'),
                      exc_info=True)
@@ -74,7 +79,7 @@ def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_n
     message.update({'channel': 'emoji_meta', 'post_at': emoji_message.next_release_date()})
     try:
         web_client.chat_scheduleMessage(**message)
-    except slack.errors.SlackApiError:
+    except errors.SlackApiError:
         # probably failed on auto-retry from slack client library, which will crash the app
         logger.error('Failed to schedule message to channel %s: %s', message.get('channel'), message.get('text'),
                      exc_info=True)
@@ -84,7 +89,7 @@ def send_emoji_message(web_client: slack.WebClient, report_channel: str, emoji_n
     sleep(1.25)
 
 
-def send_new_channel_message(web_client: slack.WebClient, report_channel: str, new_channel_name: str) -> None:
+def send_new_channel_message(web_client: WebClient, report_channel: str, new_channel_name: str) -> None:
     """Send a message to a channel about a new channel event.
 
     :param web_client: The client to respond on
@@ -97,7 +102,7 @@ def send_new_channel_message(web_client: slack.WebClient, report_channel: str, n
     web_client.chat_postMessage(**message)
 
 
-def send_new_user_message(web_client: slack.WebClient, report_channel: str, new_user: str) -> None:
+def send_new_user_message(web_client: WebClient, report_channel: str, new_user: str) -> None:
     """Send a message to a channel about a new user event. Automatically pins the message.
 
     :param web_client: The client to respond on
@@ -112,9 +117,9 @@ def send_new_user_message(web_client: slack.WebClient, report_channel: str, new_
     # Pin this message to the channel
     web_client.pins_add(channel=response['channel'], timestamp=response['ts'])
 
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
                         format='[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s')
-    SLACK_TOKEN = os.environ['SLACK_BOT_TOKEN']
-    rtm_client = slack.RTMClient(token=SLACK_TOKEN)
-    rtm_client.start()
+    app.start(port=int(os.environ.get("PORT", 3000)))
+
