@@ -3,6 +3,7 @@
 import logging
 import os
 from slack_bolt import App
+from slack_bolt.adapter.fastapi import SlackRequestHandler
 from slack_sdk import WebClient, errors
 from time import sleep
 
@@ -17,6 +18,8 @@ app = App(
     token=os.environ.get('SLACK_BOT_TOKEN'),
     signing_secret=os.environ.get('SLACK_SIGNING_SECRET')
 )
+
+app_handler = SlackRequestHandler(app)
 
 
 @app.event('emoji_changed')
@@ -116,6 +119,16 @@ def send_new_user_message(web_client: WebClient, report_channel: str, new_user: 
 
     # Pin this message to the channel
     web_client.pins_add(channel=response['channel'], timestamp=response['ts'])
+
+
+from fastapi import FastAPI, Request
+
+api = FastAPI()
+
+
+@api.post("/slack/events")
+async def endpoint(req: Request):
+    return await app_handler.handle(req)
 
 
 if __name__ == '__main__':

@@ -1,2 +1,1 @@
-// TODO: fix me so that verification of the app works on heroku deployment
-worker: python3 app.py
+web: uvicorn app:api --reload --port $PORT --log-level warning
