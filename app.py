@@ -29,7 +29,6 @@ def emoji_callback(client, event) -> None:
 
     Triggered when an emoji is added, removed, or when a new alias has been created.
     """
-    logger.info(event)
     event_type = event['subtype']
     emoji_name = event['name'] if event_type == 'add' else event['names'][0]
 
@@ -124,7 +123,7 @@ def send_new_user_message(web_client: WebClient, report_channel: str, new_user: 
 api = FastAPI()
 
 
-@api.post("/slack/events")
+@api.post('/slack/events')
 async def endpoint(req: Request):
     return await app_handler.handle(req)
 
