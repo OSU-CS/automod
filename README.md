@@ -21,11 +21,15 @@ AutoMod
     ```bash
     pip install -Ur requirements.txt
     ```
-* Run app (after activating venv). API key should be the "Bot User OAuth Token" under the Oauth &
-  Permissions tab
+  * The app runs on port 3000 by default. You can also override the port it runs on by running
     ```bash
-    SLACK_BOT_TOKEN=<production_api_key>
-    export SLACK_BOT_TOKEN
+    export PORT=50000
+    ```
+* Run app (after activating venv). API key should be the "Bot User OAuth Token" under the Oauth &
+  Permissions tab and signing secret should be the "Signing Secret" under the Basic Information tab.
+    ```bash
+    export SLACK_BOT_TOKEN=<app_bot_user_oath_token>
+    export SLACK_SIGNING_SECRET=<app_signing_secret>
     python app.py
     ```
 
